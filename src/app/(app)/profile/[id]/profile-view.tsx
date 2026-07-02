@@ -173,7 +173,7 @@ if (rpcError) {
         ]);
       }
     }
-    router.push(`/messages/${convId}`);
+    router.push(`/messages?conv=${convId}`);
   };
 
   const fullName =
