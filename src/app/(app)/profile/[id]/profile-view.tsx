@@ -122,9 +122,15 @@ export function ProfileView({
 
   const handleMessage = async () => {
     // Trouver ou créer une conversation
-    const { data: existing } = await supabase.rpc("find_or_create_conversation", {
-      other_user_id: profile.id,
-    }).single().catch(() => ({ data: null, error: null }));
+   const { data: existing, error: rpcError } = await supabase
+  .rpc("find_or_create_conversation", {
+    other_user_id: profile.id,
+  })
+  .single();
+
+if (rpcError) {
+  console.error("Erreur RPC :", rpcError);
+}
 
     // Fallback : recherche manuelle
     let convId: string | null = existing?.id || null;
