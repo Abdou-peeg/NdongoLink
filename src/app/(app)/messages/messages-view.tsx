@@ -35,6 +35,19 @@ export function MessagesView({
   const [conversations, setConversations] = useState<Conversation[]>(initial);
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(initialConversationId || null);
+  useEffect(() => {
+  if (initialConversationId && conversations.length > 0) {
+    setSelectedId(initialConversationId);
+  }
+}, [initialConversationId, conversations]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+  if (initial.length > 0) {
+    setLoading(false);
+  }
+}, [initial]);
+
+
 
   const filtered = conversations.filter((c) => {
     if (!search) return true;
@@ -95,7 +108,9 @@ export function MessagesView({
           </div>
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto scrollbar-thin">
-          {filtered.length === 0 ? (
+          {loading ? (
+  <p>Chargement...</p>
+) : filtered.length === 0 ? (
             <div className="p-8 text-center">
               <MessageSquare className="mx-auto mb-2 h-8 w-8 text-muted-foreground" />
               <p className="text-sm text-muted-foreground">
